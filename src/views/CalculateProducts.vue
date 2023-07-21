@@ -12,6 +12,13 @@
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
+        <div class="panel">
+          <a-collapse v-model:activeKey="activeKey" ghost>
+            <a-collapse-panel key="1" header="This is panel header 1">
+              <p>Pupa</p>
+            </a-collapse-panel>
+          </a-collapse>
+        </div>
         <a-form-item
           :name="['products', index, 'name']"
           :rules="{
@@ -84,7 +91,7 @@ import {
   PlusOutlined,
   DownCircleTwoTone,
 } from "@ant-design/icons-vue";
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, watch } from "vue";
 export default defineComponent({
   components: {
     MinusCircleOutlined,
@@ -121,8 +128,13 @@ export default defineComponent({
         checkedNames: [],
       };
     };
+    const activeKey = ref(["1"]);
+    watch(activeKey, (val) => {
+      console.log(val);
+    });
     return {
       formRef,
+      activeKey,
       dynamicValidateForm,
       onFinish,
       removeUser,
@@ -138,5 +150,10 @@ export default defineComponent({
   padding: 0;
   width: auto;
   height: auto;
+}
+.panel {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 50px;
 }
 </style>
