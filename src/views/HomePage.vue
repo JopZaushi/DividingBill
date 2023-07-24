@@ -38,7 +38,7 @@
   display: flex;
   justify-content: center;
 }
-.btnHomeStyle{
+.btnHomeStyle {
   margin: auto auto;
   background-color: gray;
   font-family: "VT323";

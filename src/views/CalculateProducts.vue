@@ -7,18 +7,43 @@
       @finish="onFinish"
     >
       <a-space
+        class="form_space"
         v-for="(user, index) in dynamicValidateForm.products"
         :key="user.id"
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
-        <div class="panel">
+        <!-- <div class="panel">
           <a-collapse v-model:activeKey="activeKey" ghost>
-            <a-collapse-panel key="1" header="This is panel header 1">
-              <p>Pupa</p>
+            <a-collapse-panel :key="user.id">
+              <div class="checkboxes">
+                <input
+                  type="checkbox"
+                  id="jack"
+                  value="Джек"
+                  v-model="checkedNames"
+                />
+                <label for="jack">Джек</label>
+                <input
+                  type="checkbox"
+                  id="john"
+                  value="Джон"
+                  v-model="checkedNames"
+                />
+                <label for="john">Джон</label>
+                <input
+                  type="checkbox"
+                  id="mike"
+                  value="Майк"
+                  v-model="checkedNames"
+                />
+                <label for="mike">Майк</label>
+                <br />
+                <span>Отмеченные имена: {{ checkedNames }}</span>
+              </div>
             </a-collapse-panel>
           </a-collapse>
-        </div>
+        </div> -->
         <a-form-item
           :name="['products', index, 'name']"
           :rules="{
@@ -40,33 +65,38 @@
         </a-form-item>
 
         <MinusCircleOutlined @click="removeUser(user)" />
-        <DownCircleTwoTone @click="downWindow" />
-        <div v-if="true" id="v-model-multiple-checkboxes">
-          <input
-            type="checkbox"
-            id="jack"
-            value="Джек"
-            v-model="checkedNames"
-          />
-          <label for="jack">Джек</label>
-          <input
-            type="checkbox"
-            id="john"
-            value="Джон"
-            v-model="checkedNames"
-          />
-          <label for="john">Джон</label>
-          <input
-            type="checkbox"
-            id="mike"
-            value="Майк"
-            v-model="checkedNames"
-          />
-          <label for="mike">Майк</label>
-          <br />
-          <span>Отмеченные имена: {{ checkedNames }}</span>
-        </div>
+        <DownCircleTwoTone @click="downWindow"/>
+        
       </a-space>
+      <div v-if="check">
+          <div class="checkboxes">
+                <input
+                  type="checkbox"
+                  id="jack"
+                  value="Джек"
+                  v-model="checkedNames"
+                  style="padding-left: 15x;"
+                />
+                <label for="jack">Джек</label>
+                <input
+                  type="checkbox"
+                  id="john"
+                  value="Джон"
+                  v-model="checkedNames"
+                  style="margin-left: 15x;"
+                />
+                <label for="john">Джон</label>
+                <input
+                  type="checkbox"
+                  id="mike"
+                  value="Майк"
+                  v-model="checkedNames"
+                  style="margin-left: 15x;"
+                />
+                <label for="mike">Майк</label>
+                
+              </div>
+        </div>
       <a-form-item>
         <a-button type="dashed" block @click="addUser">
           <PlusOutlined />
@@ -98,6 +128,11 @@ export default defineComponent({
     PlusOutlined,
     DownCircleTwoTone,
   },
+  data(){
+    return {
+      check: false
+    }
+  },
   setup() {
     const formRef = ref();
     const dynamicValidateForm = reactive({
@@ -123,11 +158,9 @@ export default defineComponent({
         dynamicValidateForm.products
       );
     };
-    const downWindow = () => {
-      return {
-        checkedNames: [],
-      };
-    };
+
+   
+
     const activeKey = ref(["1"]);
     watch(activeKey, (val) => {
       console.log(val);
@@ -141,6 +174,14 @@ export default defineComponent({
       addUser,
     };
   },
+
+  methods:{
+    downWindow(){
+      if (this.check == false) {
+        this.check = true;
+      } else this.check = false;
+    }
+  },
 });
 </script>
 
@@ -151,9 +192,17 @@ export default defineComponent({
   width: auto;
   height: auto;
 }
+.form_space{
+  height: 40px;
+}
 .panel {
-  display: flex;
-  justify-content: flex-end;
-  margin-left: 50px;
+  
+  //align-items: flex-end;
+  margin-left: 5px;
+}
+.checkboxes {
+  
+  margin-bottom: 15px;
+  margin-left: 5px;
 }
 </style>

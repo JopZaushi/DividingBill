@@ -1,45 +1,50 @@
 <template>
   <div>
     <a-form
-    ref="formRef"
-    name="dynamic_form_nest_item"
-    :model="dynamicValidateForm"
-    @finish="onFinish"
-  >
-    <a-space
-      v-for="(user, index) in dynamicValidateForm.users"
-      :key="user.id"
-      style="display: flex; margin-bottom: 8px"
-      align="baseline"
+      ref="formRef"
+      name="dynamic_form_nest_item"
+      :model="dynamicValidateForm"
+      @finish="onFinish"
     >
-      <a-form-item
-        :name="['users', index, 'first']"
-        :rules="{
-          required: true,
-          message: 'Missing first name',
-        }"
+      <a-space
+        v-for="(user, index) in dynamicValidateForm.users"
+        :key="user.id"
+        style="display: flex; margin-bottom: 8px"
+        align="baseline"
       >
-        <a-input v-model:value="user.first" placeholder="First Name" />
+        <a-form-item
+          :name="['users', index, 'first']"
+          :rules="{
+            required: true,
+            message: 'Missing first name',
+          }"
+        >
+          <a-input v-model:value="user.first" placeholder="First Name" />
+        </a-form-item>
+
+        <MinusCircleOutlined @click="removeUser(user)" />
+      </a-space>
+      <a-form-item>
+        <a-button type="dashed" block @click="addUser">
+          <PlusOutlined />
+          Add user
+        </a-button>
       </a-form-item>
-      
-      <MinusCircleOutlined @click="removeUser(user)" />
-    </a-space>
-    <a-form-item>
-      <a-button type="dashed" block @click="addUser">
-        <PlusOutlined />
-        Add user
-      </a-button>
-    </a-form-item>
-    <a-form-item>
-      <a-button type="primary" html-type="submit" v-on:click="$router.push({ name: 'calculate' })">Submit</a-button>
-    </a-form-item>
-  </a-form>
+      <a-form-item>
+        <a-button
+          type="primary"
+          html-type="submit"
+          v-on:click="$router.push({ name: 'calculate' })"
+          >Submit</a-button
+        >
+      </a-form-item>
+    </a-form>
   </div>
 </template>
 
 <script>
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
-import { defineComponent, reactive, ref } from 'vue';
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import { defineComponent, reactive, ref } from "vue";
 export default defineComponent({
   components: {
     MinusCircleOutlined,
@@ -50,7 +55,7 @@ export default defineComponent({
     const dynamicValidateForm = reactive({
       users: [],
     });
-    const removeUser = item => {
+    const removeUser = (item) => {
       let index = dynamicValidateForm.users.indexOf(item);
       if (index !== -1) {
         dynamicValidateForm.users.splice(index, 1);
@@ -58,13 +63,13 @@ export default defineComponent({
     };
     const addUser = () => {
       dynamicValidateForm.users.push({
-        first: '',
+        first: "",
         id: Date.now(),
       });
     };
-    const onFinish = values => {
-      console.log('Received values of form:', values);
-      console.log('dynamicValidateForm.users:', dynamicValidateForm.users);
+    const onFinish = (values) => {
+      console.log("Received values of form:", values);
+      console.log("dynamicValidateForm.users:", dynamicValidateForm.users);
     };
     return {
       formRef,
