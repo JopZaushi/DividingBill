@@ -3,11 +3,11 @@
     <a-form
       ref="formRef"
       name="dynamic_form_nest_item"
-      :model="dynamicValidateForm"
+      :model="userForm"
       @finish="onFinish"
     >
       <a-space
-        v-for="(user, index) in dynamicValidateForm.users"
+        v-for="(user, index) in userForm.users"
         :key="user.id"
         style="display: flex; margin-bottom: 8px"
         align="baseline"
@@ -50,35 +50,43 @@ export default defineComponent({
     MinusCircleOutlined,
     PlusOutlined,
   },
+  
   setup() {
     const formRef = ref();
-    const dynamicValidateForm = reactive({
+    const userForm = reactive({
       users: [],
     });
     const removeUser = (item) => {
-      let index = dynamicValidateForm.users.indexOf(item);
+      let index = userForm.users.indexOf(item);
       if (index !== -1) {
-        dynamicValidateForm.users.splice(index, 1);
+        userForm.users.splice(index, 1);
       }
     };
     const addUser = () => {
-      dynamicValidateForm.users.push({
+      userForm.users.push({
         first: "",
         id: Date.now(),
       });
     };
     const onFinish = (values) => {
       console.log("Received values of form:", values);
-      console.log("dynamicValidateForm.users:", dynamicValidateForm.users);
+      console.log("userForm.users:", userForm.users);
     };
     return {
       formRef,
-      dynamicValidateForm,
+      userForm,
       onFinish,
       removeUser,
       addUser,
     };
   },
+  // pushUser() {
+  //   this.$emit("user", this.users);
+  //   this.users = {
+  //     first: "",
+  //     id: Date.now(),
+  //   };
+  // },
 });
 </script>
 

@@ -1,4 +1,5 @@
 <template>
+  <add-users />
   <div class="home">
     <a-form
       ref="formRef"
@@ -13,37 +14,6 @@
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
-        <!-- <div class="panel">
-          <a-collapse v-model:activeKey="activeKey" ghost>
-            <a-collapse-panel :key="user.id">
-              <div class="checkboxes">
-                <input
-                  type="checkbox"
-                  id="jack"
-                  value="Джек"
-                  v-model="checkedNames"
-                />
-                <label for="jack">Джек</label>
-                <input
-                  type="checkbox"
-                  id="john"
-                  value="Джон"
-                  v-model="checkedNames"
-                />
-                <label for="john">Джон</label>
-                <input
-                  type="checkbox"
-                  id="mike"
-                  value="Майк"
-                  v-model="checkedNames"
-                />
-                <label for="mike">Майк</label>
-                <br />
-                <span>Отмеченные имена: {{ checkedNames }}</span>
-              </div>
-            </a-collapse-panel>
-          </a-collapse>
-        </div> -->
         <a-form-item
           :name="['products', index, 'name']"
           :rules="{
@@ -65,38 +35,23 @@
         </a-form-item>
 
         <MinusCircleOutlined @click="removeUser(user)" />
-        <DownCircleTwoTone @click="downWindow"/>
-        
+        <DownCircleTwoTone @click="downWindow" />
       </a-space>
       <div v-if="check">
-          <div class="checkboxes">
-                <input
-                  type="checkbox"
-                  id="jack"
-                  value="Джек"
-                  v-model="checkedNames"
-                  style="padding-left: 15x;"
-                />
-                <label for="jack">Джек</label>
-                <input
-                  type="checkbox"
-                  id="john"
-                  value="Джон"
-                  v-model="checkedNames"
-                  style="margin-left: 15x;"
-                />
-                <label for="john">Джон</label>
-                <input
-                  type="checkbox"
-                  id="mike"
-                  value="Майк"
-                  v-model="checkedNames"
-                  style="margin-left: 15x;"
-                />
-                <label for="mike">Майк</label>
-                
-              </div>
+        <div v-for="user in usersGet"
+          :key="usersGet.id"
+          :usersGetFrom="users"
+          >
+          <input
+            class="checkboxes"
+            type="checkbox"
+            id="Date.now()"
+            v-model="checkedNames"
+            style="padding-left: 15x"
+          />
+          <label class="checkboxes" for="jack">{{ users.first }}</label>
         </div>
+      </div>
       <a-form-item>
         <a-button type="dashed" block @click="addUser">
           <PlusOutlined />
@@ -122,16 +77,19 @@ import {
   DownCircleTwoTone,
 } from "@ant-design/icons-vue";
 import { defineComponent, reactive, ref, watch } from "vue";
+
 export default defineComponent({
   components: {
     MinusCircleOutlined,
     PlusOutlined,
     DownCircleTwoTone,
   },
-  data(){
+  
+  data() {
     return {
-      check: false
-    }
+      check: false,
+      users: {},
+    };
   },
   setup() {
     const formRef = ref();
@@ -159,8 +117,6 @@ export default defineComponent({
       );
     };
 
-   
-
     const activeKey = ref(["1"]);
     watch(activeKey, (val) => {
       console.log(val);
@@ -175,12 +131,13 @@ export default defineComponent({
     };
   },
 
-  methods:{
-    downWindow(){
+  methods: {
+    downWindow() {
       if (this.check == false) {
         this.check = true;
       } else this.check = false;
-    }
+    },
+    
   },
 });
 </script>
@@ -192,16 +149,14 @@ export default defineComponent({
   width: auto;
   height: auto;
 }
-.form_space{
+.form_space {
   height: 40px;
 }
 .panel {
-  
   //align-items: flex-end;
   margin-left: 5px;
 }
 .checkboxes {
-  
   margin-bottom: 15px;
   margin-left: 5px;
 }
