@@ -3,11 +3,11 @@
     <a-form
       ref="formRef"
       name="dynamic_form_nest_item"
-      :model="userForm"
+      :model="$store.state"
       @finish="onFinish"
     >
       <a-space
-        v-for="(user, index) in userForm.users"
+        v-for="(user, index) in $store.state.users"
         :key="user.id"
         style="display: flex; margin-bottom: 8px"
         align="baseline"
@@ -22,10 +22,10 @@
           <a-input v-model:value="user.first" placeholder="First Name" />
         </a-form-item>
 
-        <MinusCircleOutlined @click="removeUser(user)" />
+        <MinusCircleOutlined @click="$store.commit('removeUser', user)" />
       </a-space>
       <a-form-item>
-        <a-button type="dashed" block @click="addUser">
+        <a-button type="dashed" block @click="$store.commit('addUser')">
           <PlusOutlined />
           Add user
         </a-button>
@@ -53,10 +53,10 @@ export default defineComponent({
   
   setup() {
     const formRef = ref();
-    const userForm = reactive({
+    /*const userForm = reactive({
       users: [],
-    });
-    const removeUser = (item) => {
+    });*/
+    /*const removeUser = (item) => {
       let index = userForm.users.indexOf(item);
       if (index !== -1) {
         userForm.users.splice(index, 1);
@@ -67,17 +67,17 @@ export default defineComponent({
         first: "",
         id: Date.now(),
       });
-    };
+    };*/
     const onFinish = (values) => {
       console.log("Received values of form:", values);
-      console.log("userForm.users:", userForm.users);
+      //console.log("userForm.users:", userForm.users);
     };
     return {
       formRef,
-      userForm,
+      //userForm,
       onFinish,
-      removeUser,
-      addUser,
+      //removeUser,
+      //addUser,
     };
   },
   // pushUser() {

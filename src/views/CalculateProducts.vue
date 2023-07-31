@@ -36,22 +36,20 @@
 
         <MinusCircleOutlined @click="removeUser(user)" />
         <DownCircleTwoTone @click="downWindow" />
-      </a-space>
-      <div v-if="check">
-        <div v-for="user in usersGet"
-          :key="usersGet.id"
-          :usersGetFrom="users"
-          >
-          <input
-            class="checkboxes"
-            type="checkbox"
-            id="Date.now()"
-            v-model="checkedNames"
-            style="padding-left: 15x"
-          />
-          <label class="checkboxes" for="jack">{{ users.first }}</label>
+
+        <div class="boxes_parent" v-if="check">
+          <div v-for="user in $store.state.users" :key="user.id">
+            <input
+              class="checkboxes"
+              type="checkbox"
+              id="Date.now()"
+              v-model="checkedNames"
+              style="padding-left: 15x"
+            />
+            <label class="checkboxes" for="jack">{{ user.first }}</label>
+          </div>
         </div>
-      </div>
+      </a-space>
       <a-form-item>
         <a-button type="dashed" block @click="addUser">
           <PlusOutlined />
@@ -84,7 +82,7 @@ export default defineComponent({
     PlusOutlined,
     DownCircleTwoTone,
   },
-  
+
   data() {
     return {
       check: false,
@@ -137,7 +135,6 @@ export default defineComponent({
         this.check = true;
       } else this.check = false;
     },
-    
   },
 });
 </script>
@@ -155,6 +152,9 @@ export default defineComponent({
 .panel {
   //align-items: flex-end;
   margin-left: 5px;
+}
+.boxes_parent {
+  display: flex;
 }
 .checkboxes {
   margin-bottom: 15px;
