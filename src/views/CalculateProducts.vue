@@ -4,12 +4,12 @@
     <a-form
       ref="formRef"
       name="dynamic_form_nest_item"
-      :model="dynamicValidateForm"
+      :model="store.state"
       @finish="onFinish"
     >
       <a-space
         class="form_space"
-        v-for="(user, index) in dynamicValidateForm.products"
+        v-for="(user, index) in $store.state.products"
         :key="user.id"
         style="display: flex; margin-bottom: 8px"
         align="baseline"
@@ -34,24 +34,28 @@
           <a-input v-model:value="user.price" placeholder="Price" />
         </a-form-item>
 
-        <MinusCircleOutlined @click="removeUser(user)" />
-        <DownCircleTwoTone @click="downWindow" />
+        <MinusCircleOutlined @click="$store.commit('removeProduct', user)" />
+        <DownCircleTwoTone @click="downWindow(user)" />
 
-        <div class="boxes_parent" v-if="check">
-          <div v-for="user in $store.state.users" :key="user.id">
-            <input
-              class="checkboxes"
-              type="checkbox"
-              id="Date.now()"
-              v-model="checkedNames"
-              style="padding-left: 15x"
-            />
-            <label class="checkboxes" for="jack">{{ user.first }}</label>
-          </div>
+        <div
+          v-for="user in $store.state.users"
+          :key="user.id + index"
+          v-if="user.check"
+        >
+          <input
+            class="checkboxes"
+            type="checkbox"
+            :value="user"
+            id="products.id"
+            v-model="products.users"
+            style="padding-left: 15x"
+          />
+          <label class="checkboxes">{{ user.first }}</label>
         </div>
+        <div>{{ checkedNames }}</div>
       </a-space>
       <a-form-item>
-        <a-button type="dashed" block @click="addUser">
+        <a-button type="dashed" block @click="$store.commit('addProduct')">
           <PlusOutlined />
           Add user
         </a-button>
@@ -85,55 +89,53 @@ export default defineComponent({
 
   data() {
     return {
-      check: false,
-      users: {},
+      checkedNames: [],
     };
   },
   setup() {
     const formRef = ref();
-    const dynamicValidateForm = reactive({
-      products: [],
-    });
-    const removeUser = (item) => {
-      let index = dynamicValidateForm.products.indexOf(item);
-      if (index !== -1) {
-        dynamicValidateForm.products.splice(index, 1);
-      }
-    };
-    const addUser = () => {
-      dynamicValidateForm.products.push({
-        name: "",
-        price: "",
-        id: Date.now(),
-      });
-    };
+    // const dynamicValidateForm = reactive({
+    //   products: [],
+    // });
+
+    // const removeProduct = (item) => {
+    //   let index = dynamicValidateForm.products.indexOf(item);
+    //   if (index !== -1) {
+    //     dynamicValidateForm.products.splice(index, 1);
+    //   }
+    // };
+    // const addProduct = () => {
+    //   dynamicValidateForm.products.push({
+    //     name: "",
+    //     price: "",
+    //     users: [],
+    //     id: Date.now(),
+    //   });
+    // };
     const onFinish = (values) => {
       console.log("Received values of form:", values);
-      console.log(
-        "dynamicValidateForm.products:",
-        dynamicValidateForm.products
-      );
+      // console.log(
+      //   "dynamicValidateForm.products:",
+      //   dynamicValidateForm.products
+      // );
     };
 
-    const activeKey = ref(["1"]);
-    watch(activeKey, (val) => {
-      console.log(val);
-    });
     return {
       formRef,
-      activeKey,
-      dynamicValidateForm,
+      //activeKey,
+      //dynamicValidateForm,
       onFinish,
-      removeUser,
-      addUser,
+      //removeProduct,
+      //addProduct,
     };
   },
 
   methods: {
-    downWindow() {
-      if (this.check == false) {
-        this.check = true;
-      } else this.check = false;
+    downWindow(item) {
+      console.log(item.check)
+      if (item.check == false || item.check == undefined) {
+        item.check = true;
+      } else item.check = false;
     },
   },
 });
