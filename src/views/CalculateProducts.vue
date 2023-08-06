@@ -4,13 +4,13 @@
     <a-form
       ref="formRef"
       name="dynamic_form_nest_item"
-      :model="store.state"
+      :model="$store.state"
       @finish="onFinish"
     >
       <a-space
         class="form_space"
-        v-for="(user, index) in $store.state.products"
-        :key="user.id"
+        v-for="(product, index) in $store.state.products"
+        :key="product.id"
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
@@ -21,7 +21,7 @@
             message: 'Missing name name',
           }"
         >
-          <a-input v-model:value="user.name" placeholder="Name" />
+          <a-input v-model:value="product.name" placeholder="Name" />
         </a-form-item>
 
         <a-form-item
@@ -31,28 +31,27 @@
             message: 'Missing name name',
           }"
         >
-          <a-input v-model:value="user.price" placeholder="Price" />
+          <a-input v-model:value="product.price" placeholder="Price" />
         </a-form-item>
 
-        <MinusCircleOutlined @click="$store.commit('removeProduct', user)" />
-        <DownCircleTwoTone @click="downWindow(user)" />
+        <MinusCircleOutlined @click="$store.commit('removeProduct', product)" />
+        <DownCircleTwoTone @click="downWindow(product)" />
 
         <div
           v-for="user in $store.state.users"
           :key="user.id + index"
-          v-if="user.check"
+          v-if="product.check"
         >
           <input
             class="checkboxes"
             type="checkbox"
-            :value="user"
-            id="products.id"
-            v-model="products.users"
+            :value="user.id + index"
+            v-model="product.usersCheck"
             style="padding-left: 15x"
           />
           <label class="checkboxes">{{ user.first }}</label>
         </div>
-        <div>{{ checkedNames }}</div>
+        <div>{{ $store.state.products.usersCheck }}</div>
       </a-space>
       <a-form-item>
         <a-button type="dashed" block @click="$store.commit('addProduct')">
@@ -64,7 +63,7 @@
         <a-button
           type="primary"
           html-type="submit"
-          v-on:click="$router.push({ name: 'calculate' })"
+          v-on:click="$router.push({ name: 'result' })"
           >Submit</a-button
         >
       </a-form-item>
@@ -132,7 +131,9 @@ export default defineComponent({
 
   methods: {
     downWindow(item) {
-      console.log(item.check)
+      //console.log(item.check);
+      console.log(this.$store.state.products);
+      console.log(this.checkedNames);
       if (item.check == false || item.check == undefined) {
         item.check = true;
       } else item.check = false;

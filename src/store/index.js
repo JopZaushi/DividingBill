@@ -3,10 +3,12 @@ import { createStore } from 'vuex'
 export default createStore({
   state:()=> ({
     users: [],
-    products: []
+    products: [],
   }),
+
   getters: {
   },
+
   mutations: {
     removeUser(state, item){
       let index = state.users.indexOf(item);
@@ -23,8 +25,8 @@ export default createStore({
       });
     },
 
-    removeProduct(state){
-      let index = state.products.indexOf(state);
+    removeProduct(state, item){
+      let index = state.products.indexOf(item);
       if (index !== -1) {
         state.products.splice(index, 1);
       }
@@ -34,7 +36,7 @@ export default createStore({
       state.products.push({
         name: "",
         price: "",
-        users: [],
+        usersCheck: [],
         id: Date.now(),
       });
     },
