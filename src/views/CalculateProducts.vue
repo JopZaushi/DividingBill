@@ -31,7 +31,7 @@
             message: 'Missing name name',
           }"
         >
-          <a-input v-model:value="product.price" placeholder="Price" />
+          <a-input-number v-model:value="product.price" placeholder="Price" />
         </a-form-item>
 
         <MinusCircleOutlined @click="$store.commit('removeProduct', product)" />
@@ -45,18 +45,18 @@
           <input
             class="checkboxes"
             type="checkbox"
-            :value="user.id + index"
+            :value="user.id"
             v-model="product.usersCheck"
             style="padding-left: 15x"
           />
           <label class="checkboxes">{{ user.first }}</label>
         </div>
-        <div>{{ $store.state.products.usersCheck }}</div>
+        <div>{{ product.usersCheck }}</div>
       </a-space>
       <a-form-item>
         <a-button type="dashed" block @click="$store.commit('addProduct')">
           <PlusOutlined />
-          Add user
+          Add Product
         </a-button>
       </a-form-item>
       <a-form-item>
