@@ -15,20 +15,20 @@
         align="baseline"
       >
         <a-form-item
-          :name="['products', index, 'name']"
+          :name="['products', index, 'nameProduct']"
           :rules="{
             required: true,
-            message: 'Missing name name',
+            message: 'Missing name product',
           }"
         >
-          <a-input v-model:value="product.name" placeholder="Name" />
+          <a-input v-model:value="product.nameProduct" placeholder="Name Product" />
         </a-form-item>
 
         <a-form-item
           :name="['products', index, 'price']"
           :rules="{
             required: true,
-            message: 'Missing name name',
+            message: 'Missing price',
           }"
         >
           <a-input-number v-model:value="product.price" placeholder="Price" />
@@ -49,7 +49,7 @@
             v-model="product.usersCheck"
             style="padding-left: 15x"
           />
-          <label class="checkboxes">{{ user.first }}</label>
+          <label class="checkboxes">{{ user.nameUser }}</label>
         </div>
         <div>{{ product.usersCheck }}</div>
       </a-space>

@@ -20,12 +20,12 @@ export default createStore({
       state.users.forEach((user, index) => {
         arr[index] = 0;
         state.products.forEach((product) => {
-          if (user.id == product.usersCheck) {
-            arr[index] += product.price;
+          if (product.usersCheck.indexOf(user.id) != -1) {
+            arr[index] += product.price / product.usersCheck.length;
           }
         });
       });
-      return state.users[arr.indexOf(Math.max.apply(Math, arr))].first;
+      return arr;
     },
   },
 
@@ -39,7 +39,7 @@ export default createStore({
 
     addUser(state) {
       state.users.push({
-        first: "",
+        nameUser: "",
         id: Date.now(),
         check: false,
       });
@@ -54,7 +54,7 @@ export default createStore({
 
     addProduct(state) {
       state.products.push({
-        name: "",
+        nameProduct: "",
         price: null,
         usersCheck: [],
         id: Date.now(),

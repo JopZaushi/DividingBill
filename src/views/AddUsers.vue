@@ -13,13 +13,13 @@
         align="baseline"
       >
         <a-form-item
-          :name="['users', index, 'first']"
+          :name="['users', index, 'nameUser']"
           :rules="{
             required: true,
-            message: 'Missing first name',
+            message: 'Missing name',
           }"
         >
-          <a-input v-model:value="user.first" placeholder="First Name" />
+          <a-input v-model:value="user.nameUser" placeholder="Name" />
         </a-form-item>
 
         <MinusCircleOutlined @click="$store.commit('removeUser', user)" />
@@ -27,13 +27,14 @@
       <a-form-item>
         <a-button type="dashed" block @click="$store.commit('addUser')">
           <PlusOutlined />
-          Add user
+          Add User
         </a-button>
       </a-form-item>
       <a-form-item>
         <a-button
           type="primary"
           html-type="submit"
+          v-if="!disabled"
           v-on:click="$router.push({ name: 'calculate' })"
           >Submit</a-button
         >
@@ -44,49 +45,29 @@
 
 <script>
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     MinusCircleOutlined,
     PlusOutlined,
   },
-  
+
   setup() {
     const formRef = ref();
-    /*const userForm = reactive({
-      users: [],
-    });*/
-    /*const removeUser = (item) => {
-      let index = userForm.users.indexOf(item);
-      if (index !== -1) {
-        userForm.users.splice(index, 1);
-      }
-    };
-    const addUser = () => {
-      userForm.users.push({
-        first: "",
-        id: Date.now(),
-      });
-    };*/
-    const onFinish = (values) => {
-      console.log("Received values of form:", values);
-      //console.log("userForm.users:", userForm.users);
-    };
+
     return {
       formRef,
-      //userForm,
-      onFinish,
-      //removeUser,
-      //addUser,
     };
   },
-  // pushUser() {
-  //   this.$emit("user", this.users);
-  //   this.users = {
-  //     first: "",
-  //     id: Date.now(),
-  //   };
-  // },
+
+  computed: {
+    disabled() {
+      this.$store.state.users.forEach((user, index) => {
+        if (user.nameUser[index].length == 0) return false
+      });
+      
+    },
+  },
 });
 </script>
 
