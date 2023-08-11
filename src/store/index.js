@@ -4,6 +4,7 @@ export default createStore({
   state: () => ({
     users: [],
     products: [],
+    show: false,
   }),
 
   getters: {
@@ -59,6 +60,13 @@ export default createStore({
         usersCheck: [],
         id: Date.now(),
       });
+    },
+    closeModal(state) {
+      state.show = false;
+    },
+
+    showModal(state) {
+      state.show = true;
     },
   },
   actions: {},

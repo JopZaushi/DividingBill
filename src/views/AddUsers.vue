@@ -4,7 +4,6 @@
       ref="formRef"
       name="dynamic_form_nest_item"
       :model="$store.state"
-      @finish="onFinish"
     >
       <a-space
         v-for="(user, index) in $store.state.users"
@@ -12,13 +11,7 @@
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
-        <a-form-item
-          :name="['users', index, 'nameUser']"
-          :rules="{
-            required: true,
-            message: 'Missing name',
-          }"
-        >
+        <a-form-item>
           <a-input v-model:value="user.nameUser" placeholder="Name" />
         </a-form-item>
 
@@ -34,22 +27,28 @@
         <a-button
           type="primary"
           html-type="submit"
-          v-if="!disabled"
-          v-on:click="$router.push({ name: 'calculate' })"
+          v-on:click="
+            disabled
+              ? { click: $router.push({ name: 'calculate' }) }
+              : { click: $store.commit('showModal') }
+          "
           >Submit</a-button
         >
       </a-form-item>
     </a-form>
   </div>
+  <modal-window />
 </template>
 
 <script>
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
+import ModalWindow from "@/ModalWindow.vue";
 export default defineComponent({
   components: {
     MinusCircleOutlined,
     PlusOutlined,
+    ModalWindow,
   },
 
   setup() {
@@ -62,10 +61,18 @@ export default defineComponent({
 
   computed: {
     disabled() {
-      this.$store.state.users.forEach((user, index) => {
-        if (user.nameUser[index].length == 0) return false
+      let bool = true;
+      this.$store.state.users.forEach((user) => {
+        if (
+          user.nameUser.length == 0 ||
+          /^[a-zA-Z\u0400-\u04FF]+$/.test(user.nameUser) == false
+        ) {
+          bool = false;
+        } else {
+          bool = true;
+        }
       });
-      
+      return bool;
     },
   },
 });

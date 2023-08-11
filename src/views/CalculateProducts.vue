@@ -5,7 +5,6 @@
       ref="formRef"
       name="dynamic_form_nest_item"
       :model="$store.state"
-      @finish="onFinish"
     >
       <a-space
         class="form_space"
@@ -14,23 +13,15 @@
         style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
-        <a-form-item
-          :name="['products', index, 'nameProduct']"
-          :rules="{
-            required: true,
-            message: 'Missing name product',
-          }"
-        >
-          <a-input v-model:value="product.nameProduct" placeholder="Name Product" />
+        <a-form-item>
+          <a-input
+            v-model:value="product.nameProduct"
+            v-validate="{ required: true, alpha: true }"
+            placeholder="Name Product"
+          />
         </a-form-item>
 
-        <a-form-item
-          :name="['products', index, 'price']"
-          :rules="{
-            required: true,
-            message: 'Missing price',
-          }"
-        >
+        <a-form-item>
           <a-input-number v-model:value="product.price" placeholder="Price" />
         </a-form-item>
 
@@ -51,7 +42,6 @@
           />
           <label class="checkboxes">{{ user.nameUser }}</label>
         </div>
-        <div>{{ product.usersCheck }}</div>
       </a-space>
       <a-form-item>
         <a-button type="dashed" block @click="$store.commit('addProduct')">
@@ -63,12 +53,17 @@
         <a-button
           type="primary"
           html-type="submit"
-          v-on:click="$router.push({ name: 'result' })"
+          v-on:click="
+            disabled
+              ? { click: $router.push({ name: 'result' }) }
+              : { click: $store.commit('showModal') }
+          "
           >Submit</a-button
         >
       </a-form-item>
     </a-form>
   </div>
+  <modal-window />
 </template>
 
 <script>
@@ -77,66 +72,48 @@ import {
   PlusOutlined,
   DownCircleTwoTone,
 } from "@ant-design/icons-vue";
-import { defineComponent, reactive, ref, watch } from "vue";
+import { defineComponent, ref } from "vue";
+import ModalWindow from "@/ModalWindow.vue";
 
 export default defineComponent({
   components: {
     MinusCircleOutlined,
     PlusOutlined,
     DownCircleTwoTone,
+    ModalWindow,
   },
 
-  data() {
-    return {
-      checkedNames: [],
-    };
-  },
   setup() {
     const formRef = ref();
-    // const dynamicValidateForm = reactive({
-    //   products: [],
-    // });
-
-    // const removeProduct = (item) => {
-    //   let index = dynamicValidateForm.products.indexOf(item);
-    //   if (index !== -1) {
-    //     dynamicValidateForm.products.splice(index, 1);
-    //   }
-    // };
-    // const addProduct = () => {
-    //   dynamicValidateForm.products.push({
-    //     name: "",
-    //     price: "",
-    //     users: [],
-    //     id: Date.now(),
-    //   });
-    // };
-    const onFinish = (values) => {
-      console.log("Received values of form:", values);
-      // console.log(
-      //   "dynamicValidateForm.products:",
-      //   dynamicValidateForm.products
-      // );
-    };
 
     return {
       formRef,
-      //activeKey,
-      //dynamicValidateForm,
-      onFinish,
-      //removeProduct,
-      //addProduct,
     };
   },
 
   methods: {
     downWindow(item) {
-      //console.log(item.check);
-      console.log(this.$store.state.products);
-      console.log(this.checkedNames);
       if (item.check == false || item.check == undefined) {
         item.check = true;
       } else item.check = false;
+    },
+  },
+
+  computed: {
+    disabled() {
+      let bool = true;
+      this.$store.state.products.forEach((product) => {
+        if (
+          product.nameProduct.length == 0 ||
+          /^[a-zA-Z\u0400-\u04FF]+$/.test(product.nameProduct) == false ||
+          product.price < 1
+        ) {
+          bool = false;
+        } else {
+          bool = true;
+        }
+      });
+      return bool;
     },
   },
 });
