@@ -1,34 +1,50 @@
 <template>
-  <add-users />
-  <div class="home">
+  <div class="box_form">
+    <h2 class="title_products">Напиши продукты</h2>
     <a-form
+      class="form_products"
       ref="formRef"
       name="dynamic_form_nest_item"
       :model="$store.state"
     >
       <a-space
-        class="form_space"
+        class="space_field"
         v-for="(product, index) in $store.state.products"
         :key="product.id"
-        style="display: flex; margin-bottom: 8px"
         align="baseline"
       >
+        <img
+          class="gif_money"
+          src="https://donatepay.ru/uploads/notification/images/288179_1562179416.gif"
+        />
         <a-form-item>
           <a-input
+            class="entry_field"
             v-model:value="product.nameProduct"
             v-validate="{ required: true, alpha: true }"
-            placeholder="Name Product"
+            placeholder="Название продукта"
           />
         </a-form-item>
 
         <a-form-item>
-          <a-input-number v-model:value="product.price" placeholder="Price" />
+          <a-input
+            class="entry_field"
+            v-model:value="product.price"
+            placeholder="Цена"
+          />
         </a-form-item>
 
-        <MinusCircleOutlined @click="$store.commit('removeProduct', product)" />
-        <DownCircleTwoTone @click="downWindow(product)" />
+        <MinusCircleOutlined
+          class="btn_remove_styles"
+          @click="$store.commit('removeProduct', product)"
+        />
+        <DownCircleOutlined
+          class="btn_remove_styles"
+          @click="downWindow(product)"
+        />
 
         <div
+          class="checkboxes_space"
           v-for="user in $store.state.users"
           :key="user.id + index"
           v-if="product.check"
@@ -38,27 +54,28 @@
             type="checkbox"
             :value="user.id"
             v-model="product.usersCheck"
-            style="padding-left: 15x"
           />
-          <label class="checkboxes">{{ user.nameUser }}</label>
+          <label class="check_text">{{ user.nameUser }}</label>
         </div>
       </a-space>
-      <a-form-item>
-        <a-button type="dashed" block @click="$store.commit('addProduct')">
-          <PlusOutlined />
-          Add Product
+      <a-form-item class="btn_add_products">
+        <a-button
+          class="btn_add_products_styles"
+          @click="$store.commit('addProduct')"
+        >
+          Добавить продукт
         </a-button>
       </a-form-item>
       <a-form-item>
         <a-button
-          type="primary"
+          class="btn_next_styles"
           html-type="submit"
           v-on:click="
             disabled
               ? { click: $router.push({ name: 'result' }) }
               : { click: $store.commit('showModal') }
           "
-          >Submit</a-button
+          >Дальше</a-button
         >
       </a-form-item>
     </a-form>
@@ -67,19 +84,14 @@
 </template>
 
 <script>
-import {
-  MinusCircleOutlined,
-  PlusOutlined,
-  DownCircleTwoTone,
-} from "@ant-design/icons-vue";
+import { MinusCircleOutlined, DownCircleOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
 import ModalWindow from "@/ModalWindow.vue";
 
 export default defineComponent({
   components: {
     MinusCircleOutlined,
-    PlusOutlined,
-    DownCircleTwoTone,
+    DownCircleOutlined,
     ModalWindow,
   },
 
@@ -102,17 +114,22 @@ export default defineComponent({
   computed: {
     disabled() {
       let bool = true;
-      this.$store.state.products.forEach((product) => {
-        if (
-          product.nameProduct.length == 0 ||
-          /^[a-zA-Z\u0400-\u04FF]+$/.test(product.nameProduct) == false ||
-          product.price < 1
-        ) {
-          bool = false;
-        } else {
-          bool = true;
-        }
-      });
+      if (this.$store.state.products.length < 1) {
+        return false;
+      } else {
+        this.$store.state.products.forEach((product) => {
+          if (
+            product.nameProduct.length == 0 ||
+            /^[a-zA-Z\u0400-\u04FF]+$/.test(product.nameProduct) == false ||
+            product.price < 1 ||
+            product.usersCheck.length == 0
+          ) {
+            bool = false;
+          } else {
+            bool = true;
+          }
+        });
+      }
       return bool;
     },
   },
@@ -120,24 +137,144 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+$bgcolor: #937344;
+$bor_color: #b3b3b3;
+$text_color: whitesmoke;
+$animate_color: #8e2e2e;
+$extra_color: #757575;
+
+@mixin bit_border($width, $color) {
+  box-shadow: $width 0 $color, -$width 0 $color, 0 (-$width) $color,
+    0 $width $color;
+  margin: $width auto;
+}
+
 * {
   margin: 0;
   padding: 0;
   width: auto;
   height: auto;
 }
-.form_space {
-  height: 40px;
+.box_form {
+  @include bit_border(8px, $bor_color);
+  width: 682px;
+  background-color: $bgcolor;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  //flex-direction: column;
+  margin: 25px auto;
+  padding: 20px;
 }
-.panel {
-  //align-items: flex-end;
-  margin-left: 5px;
+.title_products {
+  color: $text_color;
+  font-family: "Press Start 2P";
+  font-weight: 400px;
+  font-size: 40px;
+  padding-bottom: 15px;
 }
-.boxes_parent {
+.form_products {
   display: flex;
-}
-.checkboxes {
-  margin-bottom: 15px;
-  margin-left: 5px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .space_field {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    .gif_money {
+      width: 25px;
+      height: 25px;
+      margin-right: -25px;
+      margin-bottom: -5px;
+    }
+
+    .entry_field {
+      color: $text_color;
+      font-family: "Press Start 2P";
+      background-color: $bor_color;
+      border: none;
+      height: 35px;
+      width: 280px;
+      margin-left: 25px;
+    }
+    ::placeholder {
+      color: $extra_color;
+    }
+    .btn_remove_styles {
+      font-size: 20px;
+      color: $animate_color;
+    }
+    .checkboxes_space {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 30px;
+      padding-right: 1px;
+      margin-top: -20px;
+      .checkboxes {
+        padding-left: 15x;
+        margin-left: 5px;
+        &:checked {
+          transform: scale(1.3);
+        }
+        &:hover{
+          background-color: #8e2e2e;
+        }
+      }
+    }
+
+    .check_text {
+      color: $text_color;
+      font-family: "Press Start 2P";
+      font-weight: 200px;
+      font-size: 15px;
+      margin-left: 5px;
+    }
+  }
+  .btn_add_products {
+    padding-top: 20px;
+
+    .btn_add_products_styles {
+      background-color: $bor_color;
+      color: $text_color;
+      font-family: "Press Start 2P";
+      font-weight: 400px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      width: 400px;
+      height: 45px;
+      &:hover {
+        background-color: $animate_color;
+        color: $text_color;
+      }
+      &:active {
+        background-color: $animate_color;
+        color: $text_color;
+      }
+    }
+  }
+
+  .btn_next_styles {
+    background-color: $bor_color;
+    color: $text_color;
+    font-family: "Press Start 2P";
+    font-weight: 400px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    width: 400px;
+    height: 45px;
+    &:hover {
+      background-color: $animate_color;
+      color: $text_color;
+    }
+    &:active {
+      background-color: $animate_color;
+      color: $text_color;
+    }
+  }
 }
 </style>
