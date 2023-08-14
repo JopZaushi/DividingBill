@@ -157,7 +157,7 @@ $extra_color: #757575;
 }
 .box_form {
   @include bit_border(8px, $bor_color);
-  width: 682px;
+  width: 722px;
   background-color: $bgcolor;
   // display: flex;
   // align-items: center;
@@ -167,6 +167,8 @@ $extra_color: #757575;
   padding: 20px;
 }
 .title_products {
+  display: flex;
+  justify-content: center;
   color: $text_color;
   font-family: "Press Start 2P";
   font-weight: 400px;
@@ -181,15 +183,20 @@ $extra_color: #757575;
 
   .space_field {
     display: flex;
+    //justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     margin-top: 8px;
+    margin-bottom: 8px;
     .gif_money {
       width: 25px;
       height: 25px;
       margin-right: -25px;
-      margin-bottom: -5px;
+      //margin-bottom: -5px;
     }
-
+    .ant-form-item {
+      margin-bottom: 0px;
+    }
     .entry_field {
       color: $text_color;
       font-family: "Press Start 2P";
@@ -208,18 +215,18 @@ $extra_color: #757575;
     }
     .checkboxes_space {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       padding-left: 30px;
       padding-right: 1px;
-      margin-top: -20px;
+      margin-top: 10px;
       .checkboxes {
         padding-left: 15x;
         margin-left: 5px;
         &:checked {
           transform: scale(1.3);
         }
-        &:hover{
+        &:hover {
           background-color: #8e2e2e;
         }
       }

@@ -1,20 +1,28 @@
 <template>
-  <div class="home">
-    <div class="box_home">
-      <p class="title_home">Делим Счёт</p>
-      <div class="btn_home">
-        <a-button
-          class="btn_home_style"
-          v-on:click="$router.push({ name: 'add' })"
-        >
-          Начать
-        </a-button>
-      </div>
+  <div class="box_home">
+    <p class="title_home">Делим Счёт</p>
+    <div class="btn_home">
+      <a-button
+        class="btn_home_style"
+        v-on:click="$router.push({ name: 'add' }), resetState()"
+      >
+        Начать
+      </a-button>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  methods: {
+    resetState() {
+      this.$store.state.users = [];
+      this.$store.state.products = [];
+      this.$store.state.show = false;
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 $bgcolor: #937344;

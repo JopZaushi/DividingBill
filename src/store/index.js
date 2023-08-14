@@ -11,7 +11,7 @@ export default createStore({
     sumReturn: (state) => {
       let sum = 0;
       state.products.forEach((product) => {
-        sum += product.price;
+        sum += parseInt(product.price);
       });
       return sum;
     },

@@ -142,26 +142,30 @@ $extra_color: #757575;
   .space_field {
     display: flex;
     margin-top: 8px;
-  }
-
-  .gif_money {
-    width: 25px;
-    height: 25px;
-    margin-right: -25px;
-    margin-bottom: -5px;
-  }
-
-  .entry_field {
-    color: $text_color;
-    font-family: "Press Start 2P";
-    background-color: $bor_color;
-    border: none;
-    height: 35px;
-    width: 400px;
-    margin-left: 25px;
-  }
-  ::placeholder {
-    color: $extra_color;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    .gif_money {
+      width: 25px;
+      height: 25px;
+      margin-right: -25px;
+      //margin-bottom: -5px;
+    }
+    .ant-form-item {
+      margin-bottom: 0px;
+    }
+    .entry_field {
+      color: $text_color;
+      font-family: "Press Start 2P";
+      background-color: $bor_color;
+      border: none;
+      height: 35px;
+      width: 400px;
+      margin-left: 25px;
+    }
+    ::placeholder {
+      color: $extra_color;
+    }
   }
   .btn_add_users {
     padding-top: 20px;
