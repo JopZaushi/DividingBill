@@ -1,13 +1,8 @@
 <template>
-  <!-- <div class="routerLinks">
-    <router-link to="/"></router-link>
-  </div> -->
   <div class="routerClass">
     <RouterView />
   </div>
 </template>
-
-<script></script>
 
 <style lang="scss">
 * {

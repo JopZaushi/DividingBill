@@ -13,10 +13,7 @@
         :key="user.id"
         align="baseline"
       >
-        <img
-          class="gif_money"
-          src="https://donatepay.ru/uploads/notification/images/288179_1562179416.gif"
-        />
+        <img class="gif_money" src="../assets/money.gif" />
         <a-form-item>
           <a-input
             class="entry_field"
@@ -26,13 +23,18 @@
         </a-form-item>
         <MinusCircleOutlined
           class="btn_remove_styles"
-          @click="$store.commit('removeUser', user)"
+          @click="removeUser(user.id)"
         />
       </a-space>
       <a-form-item class="btn_add_users">
         <a-button
           class="btn_add_users_styles"
-          @click="$store.commit('addUser')"
+          @click="
+            addUser({
+              nameUser: '',
+              id: Date.now(),
+            })
+          "
         >
           Добавить человека
         </a-button>
@@ -43,9 +45,7 @@
           type="primary"
           html-type="submit"
           v-on:click="
-            disabled
-              ? { click: $router.push({ name: 'calculate' }) }
-              : { click: $store.commit('showModal') }
+            disabled ? $router.push({ name: 'addProducts' }) : showModal()
           "
           >Дальше</a-button
         >
@@ -58,6 +58,7 @@
 <script>
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
+import { mapMutations } from "vuex";
 import ModalWindow from "@/ModalWindow.vue";
 export default defineComponent({
   components: {
@@ -74,23 +75,22 @@ export default defineComponent({
     };
   },
 
+  methods: {
+    ...mapMutations(["addUser", "removeUser", "showModal"]),
+  },
+
   computed: {
     disabled() {
       let bool = true;
       if (this.$store.state.users.length < 2) {
         return false;
-      } else {
+      } else
         this.$store.state.users.forEach((user) => {
-          if (
-            user.nameUser.length == 0 ||
-            /^[a-zA-Z\u0400-\u04FF]+$/.test(user.nameUser) == false
-          ) {
-            bool = false;
-          } else {
-            bool = true;
-          }
+          bool = !!(
+            user.nameUser.length !== 0 &&
+            /^[a-zA-Z\u0400-\u04FF]+$/.test(user.nameUser) === true
+          );
         });
-      }
       return bool;
     },
   },

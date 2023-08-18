@@ -8,10 +8,10 @@ export default createStore({
   }),
 
   getters: {
-    sumReturn: (state) => {
+    productsTotalSum: (state) => {
       let sum = 0;
       state.products.forEach((product) => {
-        sum += parseInt(product.price);
+        sum += +product.price;
       });
       return sum;
     },
@@ -21,8 +21,9 @@ export default createStore({
       state.users.forEach((user, index) => {
         arr[index] = 0;
         state.products.forEach((product) => {
-          if (product.usersCheck.indexOf(user.id) != -1) {
-            arr[index] += product.price / product.usersCheck.length;
+
+          if (product.usersChosen.indexOf(user.id) !== -1) {
+            arr[index] += product.price / product.usersChosen.length;
           }
         });
       });
@@ -31,35 +32,20 @@ export default createStore({
   },
 
   mutations: {
-    removeUser(state, item) {
-      let index = state.users.indexOf(item);
-      if (index !== -1) {
-        state.users.splice(index, 1);
-      }
+    removeUser(state, userId) {
+      state.users = state.users.filter(user => user.id !== userId);
     },
 
-    addUser(state) {
-      state.users.push({
-        nameUser: "",
-        id: Date.now(),
-        check: false,
-      });
+    addUser(state, user) {
+      state.users.push(user);
     },
 
-    removeProduct(state, item) {
-      let index = state.products.indexOf(item);
-      if (index !== -1) {
-        state.products.splice(index, 1);
-      }
+    removeProduct(state, productId) {
+      state.products = state.products.filter(product => product.id !== productId);
     },
 
-    addProduct(state) {
-      state.products.push({
-        nameProduct: "",
-        price: null,
-        usersCheck: [],
-        id: Date.now(),
-      });
+    addProduct(state, product) {
+      state.products.push(product);
     },
     closeModal(state) {
       state.show = false;
@@ -68,6 +54,12 @@ export default createStore({
     showModal(state) {
       state.show = true;
     },
+
+    resetState(state) {
+      state.users = [];
+      state.products = [];
+      state.show = false;
+    }
   },
   actions: {},
   modules: {},

@@ -1,30 +1,33 @@
 <template>
-  <div class="box_results" v-if="$store.state.users.length != 0">
+  <div class="box_results" v-if="this.$store.state.users.length != 0">
     <h2 class="title_results_sum">
       Промежуточный итог:
-      <span class="title_white"> {{ $store.getters.sumReturn }} </span>
+      <span class="title_white"> {{ this.$store.getters.productsTotalSum }} </span>
     </h2>
     <h3 class="title_results_pay">
       Платит:
       <span class="title_white">
         {{
-          $store.state.users[
-            $store.getters.peoplePay.indexOf(
-              Math.max.apply(Math, $store.getters.peoplePay)
+          this.$store.state.users[
+            this.$store.getters.peoplePay.indexOf(
+              Math.max.apply(Math, this.$store.getters.peoplePay)
             )
           ].nameUser
         }}
       </span>
     </h3>
 
-    <div v-for="(user, index) in $store.state.users" :key="user.id + index">
+    <div 
+        v-for="(user, index) in this.$store.state.users" 
+        :key="user.id + index"
+    >
       <ul
         class="text_users_pay"
         v-if="
           user.id !=
-          $store.state.users[
-            $store.getters.peoplePay.indexOf(
-              Math.max.apply(Math, $store.getters.peoplePay)
+          this.$store.state.users[
+            this.$store.getters.peoplePay.indexOf(
+              Math.max.apply(Math, this.$store.getters.peoplePay)
             )
           ].id
         "
@@ -32,7 +35,7 @@
         <li>
           {{ user.nameUser }} должен(на):
           <span class="title_white">
-            {{ $store.getters.peoplePay[index] }} рублей
+            {{ this.$store.getters.peoplePay[index] }} рублей
           </span>
         </li>
       </ul>
@@ -59,7 +62,7 @@
   </div>
 </template>
 
-<script></script>
+
 
 <style lang="scss">
 $bgcolor: #937344;

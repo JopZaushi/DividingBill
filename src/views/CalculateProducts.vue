@@ -13,10 +13,7 @@
         :key="product.id"
         align="baseline"
       >
-        <img
-          class="gif_money"
-          src="https://donatepay.ru/uploads/notification/images/288179_1562179416.gif"
-        />
+        <img class="gif_money" src="../assets/money.gif" />
         <a-form-item>
           <a-input
             class="entry_field"
@@ -36,24 +33,24 @@
 
         <MinusCircleOutlined
           class="btn_remove_styles"
-          @click="$store.commit('removeProduct', product)"
+          @click="removeProduct(product.id)"
         />
         <DownCircleOutlined
           class="btn_remove_styles"
-          @click="downWindow(product)"
+          @click="toggleProductCollapseWindow(product)"
         />
 
         <div
           class="checkboxes_space"
           v-for="user in $store.state.users"
           :key="user.id + index"
-          v-if="product.check"
+          v-if="product.checkClickToggle"
         >
           <input
             class="checkboxes"
             type="checkbox"
             :value="user.id"
-            v-model="product.usersCheck"
+            v-model="product.usersChosen"
           />
           <label class="check_text">{{ user.nameUser }}</label>
         </div>
@@ -61,7 +58,15 @@
       <a-form-item class="btn_add_products">
         <a-button
           class="btn_add_products_styles"
-          @click="$store.commit('addProduct')"
+          @click="
+            addProduct({
+              nameProduct: '',
+              price: null,
+              usersChosen: [],
+              checkClickToggle: false,
+              id: Date.now(),
+            })
+          "
         >
           Добавить продукт
         </a-button>
@@ -72,8 +77,8 @@
           html-type="submit"
           v-on:click="
             disabled
-              ? { click: $router.push({ name: 'result' }) }
-              : { click: $store.commit('showModal') }
+              ? $router.push({ name: 'result' })
+              : showModal()
           "
           >Дальше</a-button
         >
@@ -86,6 +91,7 @@
 <script>
 import { MinusCircleOutlined, DownCircleOutlined } from "@ant-design/icons-vue";
 import { defineComponent, ref } from "vue";
+import { mapMutations } from "vuex";
 import ModalWindow from "@/ModalWindow.vue";
 
 export default defineComponent({
@@ -104,10 +110,15 @@ export default defineComponent({
   },
 
   methods: {
-    downWindow(item) {
-      if (item.check == false || item.check == undefined) {
-        item.check = true;
-      } else item.check = false;
+    ...mapMutations(["addProduct", "removeProduct", "showModal"]),
+
+    toggleProductCollapseWindow(item) {
+      if (
+        item.checkClickToggle === false ||
+        item.checkClickToggle === undefined
+      ) {
+        item.checkClickToggle = true;
+      } else item.checkClickToggle = false;
     },
   },
 
@@ -116,20 +127,15 @@ export default defineComponent({
       let bool = true;
       if (this.$store.state.products.length < 1) {
         return false;
-      } else {
+      } else
         this.$store.state.products.forEach((product) => {
-          if (
-            product.nameProduct.length == 0 ||
-            /^[a-zA-Z\u0400-\u04FF]+$/.test(product.nameProduct) == false ||
-            product.price < 1 ||
-            product.usersCheck.length == 0
-          ) {
-            bool = false;
-          } else {
-            bool = true;
-          }
+          bool = !!(
+            product.nameProduct.length !== 0 &&
+            /^[a-zA-Z\u0400-\u04FF]+$/.test(product.nameProduct) === true &&
+            product.price >= 1 &&
+            product.usersChosen.length !== 0
+          );
         });
-      }
       return bool;
     },
   },

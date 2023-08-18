@@ -1,8 +1,8 @@
 <template>
   <div
-    v-if="$store.state.show"
+    v-if="this.$store.state.show"
     class="modal_shadow"
-    @click.self="$store.commit('closeModal')"
+    @click.self="this.$store.commit('closeModal')"
   >
     <div class="modal">
       <h3 class="modal_title">Внимание</h3>
@@ -10,7 +10,7 @@
       <div class="modal_content">Некорректный ввод</div>
 
       <div class="btn_modal">
-        <a-button class="btn_modal_style" @click="$store.commit('closeModal')">
+        <a-button class="btn_modal_style" @click="this.$store.commit('closeModal')">
           Хорошо
         </a-button>
       </div>
@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script></script>
+
 
 <style lang="scss">
 $bgcolor: #937344;

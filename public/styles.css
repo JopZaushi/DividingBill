@@ -1,8 +1,7 @@
 .body {
-  background-color: dimgrey;
   width: auto;
   height: auto;
-  background-image: url(https://mir-s3-cdn-cf.behance.net/project_modules/fs/77d9aa67575255.5b3e45eb69c5d.gif);
+  background-image: url("./background.gif");
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;

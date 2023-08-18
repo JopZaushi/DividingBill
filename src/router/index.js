@@ -9,12 +9,12 @@ const routes = [
   },
   {
     path: '/users',
-    name: 'add',
+    name: 'addUsers',
     component: () => import('@/views/AddUsers.vue'),
   },
   {
-    path: '/calculate',
-    name: 'calculate',
+    path: '/products',
+    name: 'addProducts',
     component: () => import('@/views/CalculateProducts.vue'),
   },
   {
